@@ -1,0 +1,146 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMQwR9DsEssIexiEbN806pm",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/microhard53/pytorch/blob/main/realtor\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9jPDhQWdad6N",
+        "outputId": "2fe98b15-d296-46c9-e166-58b2108c4809"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "2025-11-22 16:39:11.554 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.559 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.731 \n",
+            "  \u001b[33m\u001b[1mWarning:\u001b[0m to view this Streamlit app on a browser, run it with the following\n",
+            "  command:\n",
+            "\n",
+            "    streamlit run /usr/local/lib/python3.12/dist-packages/colab_kernel_launcher.py [ARGUMENTS]\n",
+            "2025-11-22 16:39:11.734 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.735 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.764 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.768 Session state does not function when running a script without `streamlit run`\n",
+            "2025-11-22 16:39:11.772 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.775 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.778 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.781 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.782 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.786 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.792 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.793 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.796 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.800 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.838 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.840 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.844 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.847 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+            "2025-11-22 16:39:11.850 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'last_clicked': None,\n",
+              " 'last_object_clicked': None,\n",
+              " 'last_object_clicked_tooltip': None,\n",
+              " 'last_object_clicked_popup': None,\n",
+              " 'all_drawings': None,\n",
+              " 'last_active_drawing': None,\n",
+              " 'bounds': {'_southWest': {'lat': None, 'lng': None},\n",
+              "  '_northEast': {'lat': None, 'lng': None}},\n",
+              " 'zoom': 6,\n",
+              " 'last_circle_radius': None,\n",
+              " 'last_circle_polygon': None,\n",
+              " 'selected_layers': None}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ],
+      "source": [
+        "import streamlit as st\n",
+        "import folium\n",
+        "from streamlit_folium import st_folium\n",
+        "\n",
+        "st.title(\"Map Chat App\")\n",
+        "\n",
+        "# Initial map location (example: Johannesburg)\n",
+        "m = folium.Map(location=[-26.2041, 28.0473], zoom_start=6)\n",
+        "\n",
+        "# Chat memory state\n",
+        "if 'chat_history' not in st.session_state:\n",
+        "    st.session_state['chat_history'] = []\n",
+        "\n",
+        "def handle_chat(input_text):\n",
+        "    # Example: Add marker if location in text\n",
+        "    if 'add marker' in input_text.lower():\n",
+        "        # Simple location parsing\n",
+        "        if 'cape town' in input_text.lower():\n",
+        "            folium.Marker(location=[-33.9249, 18.4241], popup='Cape Town').add_to(m)\n",
+        "            return \"Added marker for Cape Town.\"\n",
+        "        elif 'durban' in input_text.lower():\n",
+        "            folium.Marker(location=[-29.8587, 31.0218], popup='Durban').add_to(m)\n",
+        "            return \"Added marker for Durban.\"\n",
+        "        else:\n",
+        "            return \"Location not recognized. Try 'Cape Town' or 'Durban'.\"\n",
+        "    return \"Type 'add marker [location]' to place a marker.\"\n",
+        "\n",
+        "user_input = st.text_input(\"Chat with the map:\")\n",
+        "if user_input:\n",
+        "    response = handle_chat(user_input)\n",
+        "    st.session_state['chat_history'].append((user_input, response))\n",
+        "\n",
+        "# Show chat history\n",
+        "for msg, rsp in st.session_state['chat_history']:\n",
+        "    st.markdown(f\"**You:** {msg}\")\n",
+        "    st.markdown(f\"**Map:** {rsp}\")\n",
+        "\n",
+        "# Show updated map\n",
+        "st_folium(m, width=700, height=500)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "0L9Vt8Glbxn4"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
